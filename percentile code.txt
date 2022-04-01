@@ -1,0 +1,76 @@
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <vector>
+#include <set>
+#include <map>
+#include <string>
+#include <stack>
+#include <queue>
+#include <sstream>
+#include <fstream>
+ 
+const int maxN = 300005;
+const int INF = 1e9;
+using namespace std;
+ 
+double sum[2000] = {}, numdays[2000] = {};
+double percentile[100] = {66.4,65,68,70,66,70.4,66,67.4,68,68,64.4,66.4,67.4,67,67,67.4,69,67,66.4,68,67,66.4,69,67,65,66,67,69.4,66,66.4,67.4,63,65,65,69.4,65,67.4,67.4,69,69.4,68,69,68.4,64.4,70,68.4,68,65.4,65,69,68,66};
+ 
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+ 
+    ifstream in("/Users/youngkim/Desktop/LR_Research/DAWSON_COMBINED_STATION.csv");
+    string line, field;
+    vector< vector<string> > array;  // the 2D array
+    vector<string> v;                // array of values for one line only
+ 
+    while ( getline(in,line) ){
+        v.clear();
+        stringstream ss(line);
+ 
+        while (getline(ss,field,',')){
+            v.push_back(field);  // add each field to the 1D array
+        }
+        array.push_back(v);  // add the 1D array to the 2D array
+    }
+ 
+    int cnt = 0;
+    int ans = 0;
+    int cur_time=0;
+ 
+    for (size_t i=1; i<array.size(); ++i){
+        string year;
+        string temp = array[i][3];
+        year = temp.substr(0,4);
+ 
+        int cur_year = stoi(year);
+        //double t_max = stoi(array[i][5]);
+        double t_min = stoi(array[i][6]);
+ 
+        int idx = cur_year - 1961;
+ 
+       // cout << t_min << " " << percentile[idx] << "\n";
+        if (t_min > percentile[idx]){
+ 
+            cnt ++;
+            if (cnt == 2){
+                ans = 2;
+            }
+            if (cnt > 2){
+                ans ++;
+            }
+        }
+ 
+        if (cur_time != cur_year){
+            cur_time = cur_year;
+            cout << ans << "\n";
+            ans = 0;
+        }
+    }
+ 
+ 
+ 
+}
+ 
